@@ -1,9 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Game from './Game.js';
-import * as serviceWorker from './serviceWorker';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Game from './Game'
+import * as serviceWorker from './serviceWorker'
 
-ReactDOM.render(<Game />, document.getElementById('root'));
+ReactDOM.render(<Game />, document.getElementById('root'))
 
-
-serviceWorker.unregister();
+serviceWorker.unregister()
