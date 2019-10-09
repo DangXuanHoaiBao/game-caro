@@ -1,7 +1,18 @@
-import React from 'react'
-import Board from './Board'
-import './bootstrap.css'
-import './Game.css'
+
+const defaultState = {
+    history: [
+        {
+            squares: Array(400).fill(null)
+        }
+    ],
+    xIsNext: true,
+    winnerHistory: [
+        {
+            arrayWinner: Array(0).fill(null)
+        }
+    ],
+    stepNumber: 0
+}
 
 const checkWinOnRow = (squares, index) => {
     const arrayWin = [] // mảng lưu lại chỉ số của ô thắng.
@@ -284,160 +295,72 @@ const calculateWinner = (squares, index) => {
     return null
 }
 
-class Game extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            history: [
-                {
-                    squares: Array(400).fill(null)
+const rootReducer = (state = defaultState, action) => {
+    const index = action.i
+    switch(action.type){
+        case 'HANDLE_CLICK': {
+            const historyCopy = state.history.slice(0, state.stepNumber + 1)
+            const current = historyCopy[historyCopy.length - 1]
+            const squares = current.squares.slice()
+            const winnerHistoryCopy = state.winnerHistory.slice(0, state.stepNumber)
+            const currentWinner = winnerHistoryCopy[winnerHistoryCopy.length - 1]
+
+            if (squares[index] || currentWinner) {
+                return state
+            }
+
+            squares[index] = state.xIsNext ? 'x' : 'o'
+
+            if (calculateWinner(squares, index)) {
+                return {
+                    history: historyCopy.concat([{ squares }]),
+                    winnerHistory: winnerHistoryCopy.concat([
+                        { arrayWinner: calculateWinner(squares, index) }
+                    ]),
+                    stepNumber: historyCopy.length
                 }
-            ],
-            xIsNext: true,
-            winnerHistory: [
-                {
-                    arrayWinner: Array(0).fill(null)
-                }
-            ],
-            stepNumber: 0
-        }
-    }
-
-    handleClick(i) {
-        const { history, stepNumber, winnerHistory, xIsNext } = this.state
-        const historyCopy = history.slice(0, stepNumber + 1)
-        const current = historyCopy[historyCopy.length - 1]
-        const squares = current.squares.slice()
-        const winnerHistoryCopy = winnerHistory.slice(0, stepNumber)
-        const currentWinner = winnerHistoryCopy[winnerHistoryCopy.length - 1]
-        if (squares[i] || currentWinner) {
-            return
-        }
-
-        squares[i] = xIsNext ? 'x' : 'o'
-
-        if (calculateWinner(squares, i)) {
-            this.setState({
-                history: historyCopy.concat([{ squares }]),
-                winnerHistory: winnerHistoryCopy.concat([
-                    { arrayWinner: calculateWinner(squares, i) }
-                ]),
-                stepNumber: historyCopy.length
-            })
-        } else {
-            this.setState({
+            }
+            return {
                 history: historyCopy.concat([{ squares }]),
                 winnerHistory: winnerHistoryCopy.concat([null]),
                 stepNumber: historyCopy.length,
-                xIsNext: !xIsNext
-            })
-        }
-    }
-
-    jumpTo(step) {
-        this.setState({
-            stepNumber: step,
-            xIsNext: step % 2 === 0
-        })
-    }
-
-    previousClick() {
-        const { stepNumber } = this.state
-        const step = stepNumber - 1
-        if (step >= 0 && step <= stepNumber) {
-            this.setState({
-                stepNumber: step,
-                xIsNext: step % 2 === 0
-            })
-        }
-    }
-
-    nextClick() {
-        const { stepNumber, history } = this.state
-        const step = stepNumber + 1
-        const historyCopy = history.slice()
-        const { length } = historyCopy
-        if (step < length)
-            this.setState({
-                stepNumber: step,
-                xIsNext: step % 2 === 0
-            })
-    }
-
-    render() {
-        const { history, stepNumber, winnerHistory, xIsNext } = this.state
-        const current = history[stepNumber]
-        const moves = history.map((step, move) => {
-            const desc = move ? `Go to move #${move}` : 'Go to game start'
-            if (stepNumber === move) {
-                return (
-                    <li key={move.toString()}>
-                        <button
-                            type="button"
-                            className="background-powderblue width-200"
-                            onClick={() => this.jumpTo(move)}
-                        >
-                            {desc}
-                        </button>
-                    </li>
-                )
+                xIsNext: !state.xIsNext
             }
-
-            return (
-                <li key={move.toString()}>
-                    <button
-                        type="button"
-                        className="width-200"
-                        onClick={() => this.jumpTo(move)}
-                    >
-                        {desc}
-                    </button>
-                </li>
-            )
-        })
-        const winnerCurrent = winnerHistory[stepNumber - 1]
-        let arrayWinner
-        let player
-        let status
-        if (winnerCurrent) {
-            arrayWinner = winnerCurrent.arrayWinner.slice()
-            player = stepNumber % 2 ? 'x' : 'o'
-            status = `Winner: ${player}`
-        } else {
-            player = xIsNext ? 'x' : 'o'
-            status = `Player next: ${player}`
         }
-        return (
-            <div className="container">
-                <div className="row mt-3">
-                    <div className="col-md-8">
-                        <h2 className="ml-170">Game Caro VietNam</h2>
-                        <Board
-                            squares={current.squares}
-                            arrayWinner={arrayWinner}
-                            onClick={(i) => this.handleClick(i)}
-                        />
-                    </div>
-                    <div className="col-md-4 mt-5">
-                        <h3>{status}</h3>
-                        <span>
-                            <button
-                                type="button"
-                                className="mt-3 mb-3 ml-4"
-                                onClick={() => this.previousClick()}
-                            >
-                                Previous
-                            </button>
-                            <button type="button" onClick={() => this.nextClick()}>
-                                Next
-                            </button>
-                        </span>
-                        <ol>{moves}</ol>
-                    </div>
-                </div>
-            </div>
-        )
+
+        case 'JUMPTO': {
+            return {
+                ...state,
+                stepNumber: action.step,
+                xIsNext: action.step % 2 === 0
+            }
+        }
+        case 'PREVIOUS_CLICK':  {
+            const step = state.stepNumber - 1;
+            if(step >= 0 && step <= state.stepNumber){
+                return {
+                    ...state,
+                    stepNumber: step,
+                    xIsNext: step % 2 === 0
+                }
+            }
+            return state
+        }
+        case 'NEXT_CLICK':{
+            const step = state.stepNumber + 1;
+            const historyCopy = state.history.slice();
+            const {length} = historyCopy;
+            if(step < length){
+                return {
+                    ...state,
+                    stepNumber: step,
+                    xIsNext: step % 2 === 0
+                }
+            }
+            return state;
+        }  
+        default: 
+            return state;
     }
 }
-
-export default Game
+export default rootReducer;

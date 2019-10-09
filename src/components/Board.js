@@ -1,6 +1,6 @@
 import React from 'react'
 import Square from './Square'
-import './Game.css'
+import '../Game.css'
 
 const Board = ({ squares, onClick, arrayWinner }) => {
     const renderSquareNoStyle = (i) => {
