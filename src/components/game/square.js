@@ -1,5 +1,5 @@
 import React from 'react'
-import '../Game.css'
+import '../../css/game.css'
 
 const Square = ({ styleSquare, onClick, value }) => {
     return (

@@ -1,7 +1,7 @@
 import React from 'react'
-import Board from './Board'
-import '../bootstrap.css'
-import '../Game.css'
+import Board from './board'
+import '../../css/bootstrap.css'
+import '../../css/game.css'
 
 const Game = ({history, winnerHistory, stepNumber, xIsNext, handleClick, previousClick, nextClick, jumpTo}) => {
         
@@ -12,7 +12,7 @@ const Game = ({history, winnerHistory, stepNumber, xIsNext, handleClick, previou
                 <li key={move.toString()}>
                     <button
                         type="button"
-                        className="background-powderblue width-200"
+                        className="background-powderblue w-100"
                         onClick={() => jumpTo(move)}
                     >
                         {desc}
@@ -24,7 +24,7 @@ const Game = ({history, winnerHistory, stepNumber, xIsNext, handleClick, previou
             <li key={move.toString()}>
                 <button
                     type="button"
-                    className="width-200"
+                    className="w-100"
                     onClick={() => jumpTo(move)}
                 >
                     {desc}
@@ -47,10 +47,10 @@ const Game = ({history, winnerHistory, stepNumber, xIsNext, handleClick, previou
         status = `Player next: ${player}`
     }
     return (
-        <div className="container">
-            <div className="row mt-3">
-                <div className="col-md-8">
-                    <h2 className="ml-170">Game Caro VietNam</h2>
+        <div className="container form border border-info mt-4">
+            <div className="row mt-2 ml-2 mb-2">
+                <div className="col-md-8 justify-content-md-center">
+                    <h2>Game Caro VietNam</h2>
                     <Board
                         squares={squares}
                         arrayWinner={arrayWinner}

@@ -1,15 +1,15 @@
 import { connect } from 'react-redux';
-import Game from '../components/Game';
-import {handleClick, jumpTo, previousClick, nextClick} from '../actions'
+import Game from '../components/game/index';
+import {handleClick, jumpTo, previousClick, nextClick} from '../actions/game'
 
 const mapStateToProps = state => ({
-    history: state.history, 
-    winnerHistory: state.winnerHistory,
-    xIsNext: state.xIsNext,
-    stepNumber: state.stepNumber
+    history: state.gameReducer.history, 
+    winnerHistory: state.gameReducer.winnerHistory,
+    xIsNext: state.gameReducer.xIsNext,
+    stepNumber: state.gameReducer.stepNumber
 })
 
-const mapDispatchProps = dispatch =>({
+const mapDispatchToProps = dispatch =>({
     handleClick: i => {
         dispatch(handleClick(i))
     },
@@ -26,6 +26,6 @@ const mapDispatchProps = dispatch =>({
 
 export default connect(
     mapStateToProps,
-    mapDispatchProps
+    mapDispatchToProps
 )(Game)
 

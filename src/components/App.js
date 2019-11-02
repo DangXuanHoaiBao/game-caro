@@ -1,38 +1,95 @@
 import React from 'react';
-import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
-import {Provider} from 'react-redux';
-import Register from './Register';
-import Login from './Login';
-import Home from './Home';
-import Game from '../containers/index';
+import { Switch, Route, Link} from 'react-router-dom';
+import {Router} from 'react-router';
+import {Navbar, Nav, Button} from 'react-bootstrap';
+import {connect} from 'react-redux';
+import Register from '../containers/user/register';
+import Login from '../containers/user/login';
+import Home from './home';
+import Game from '../containers/game';
+import history from '../helpers/history';
+import userActions from '../actions/user';
+import InforUser from './user/inforUser';
 
-const App = ({store}) => {
-    return(
-        <div className='container'>
-            <div className='row justify-content-md-center mt-5'>
-                <div className='col-md-12'>
-                    <Provider store={store}>
-                        <Router>
-                            <div>
-                                <ul>
-                                    <li><Link to='/register'> Register </Link></li>
-                                    <li><Link to='/login'> Login </Link></li>
-                                    <li><Link to='/play-game'> Play Game</Link></li>
-                                    <li><Link to='/'> Home </Link></li>
-                                </ul>
-                                <Switch>
-                                    <Route path='/register' component={Register} />
-                                    <Route path='/login' component={Login} />
-                                    <Route path='/play-game' component={Game} />
-                                    <Route exact path='/' component={Home} />
-                                </Switch>
-                            </div>
-                        </Router>
-                    </Provider>
+class App extends React.Component {
+    constructor(props){
+        super(props);
+        this.handleClickLink = this.handleClickLink.bind(this);
+        this.handleClickButton = this.handleClickButton.bind(this);
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    handleClickLink(e){
+        e.preventDefault();
+        const {userInfor} = this.props;
+        if(userInfor){
+            history.push('/play-game');
+        }
+        else{
+            history.push('/login');
+        }
+    }
+
+    handleClickButton(e){
+        e.preventDefault();
+        const {logout} = this.props;
+        logout();
+        history.push('/login');
+    }
+
+    render(){
+        const {userInfor} = this.props;
+        return(
+            <Router history={history}>
+                <Navbar bg="dark" expand="lg" variant="dark">
+                    <Navbar.Brand><Link to='/'> Home </Link></Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="mr-auto">
+                            <Nav.Link to='/play-game' onClick={this.handleClickLink}>Play Game</Nav.Link>
+                        </Nav>
+                        { !userInfor &&
+                            <Nav>
+                                <Link to='/register'><Button variant="outline-info">Sign-up</Button></Link>
+                                &nbsp;
+                                <Link to='/login'> <Button variant="outline-info">Login</Button></Link>
+                            </Nav>
+                        }
+
+                        { userInfor &&
+                            <Nav>
+                                <Button className="w-50" onClick={this.handleClickButton} variant="outline-info">Logout</Button>
+                                &nbsp;
+                                <Link to='/infor-user'> <Button variant="outline-info">{userInfor.user}</Button></Link>
+                            </Nav>
+                        }
+
+                    </Navbar.Collapse>
+                </Navbar>
+                <div className="container">
+                    <Switch>
+                        <Route exact path='/register' component={Register} />
+                        <Route exact path='/login' component={Login} />
+                        <Route exact path='/play-game' component={Game} />
+                        <Route exact path='/infor-user' component={InforUser}/>
+                        <Route exact path='/' component={Home} />
+                    </Switch>
                 </div>
-            </div>
-        </div>
-    );
+            </Router>
+        );
+    }
 }
 
-export default App;
+const mapStateToProps = state => ({
+    userInfor: state.userLoginReducer.userInfor
+})
+
+const actionCreator = {
+    logout: userActions.logout
+}
+
+export default connect(mapStateToProps, actionCreator)(App);
+
+
+
+
