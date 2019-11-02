@@ -22,10 +22,10 @@ class Login extends React.Component {
         const {name, value} = e.target;
         const {errors} = this.state;
         if(name === 'username'){
-            errors.username = (value.length ===0) ? '(username is required)' : '';
+            errors.username = (value.length ===0) ? '(username bắt buộc)' : '';
         }
         if(name === 'password'){
-            errors.password = (value.length === 0) ? '(password is required)' : '';
+            errors.password = (value.length === 0) ? '(password bắt buộc)' : '';
         }
         this.setState({
             [name]: value,
@@ -64,7 +64,7 @@ class Login extends React.Component {
         return(
             <div className="container form border border-danger mt-5">
                 <div className='row justify-content-md-center'>
-                    <h2 className='mt-4'>Login</h2>
+                    <h2 className='mt-4'>Đăng Nhập</h2>
                 </div>
                 <br/><br/>
                 <div className='row justify-content-md-center'>
@@ -81,7 +81,7 @@ class Login extends React.Component {
                                 <Form.Control type="password" placeholder="Password"  name="password" value={password} onChange={this.handleChange}/>
                             </Form.Group>
                             <Button className="w-100" variant="primary" type="submit">
-                                Login
+                                Đăng Nhập
                             </Button>
                             {loading}
                         </Form>

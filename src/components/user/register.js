@@ -25,13 +25,13 @@ class Register extends React.Component {
         const {name, value} = e.target;
         const {errors} = this.state;
         if(name === 'username'){
-            errors.username = (value.length < 1 || value[0] === ' ') ? '(username is required)' : '';
+            errors.username = (value.length < 1 || value[0] === ' ') ? '(username bắt buộc)' : '';
         }
         if(name === 'password'){
-            errors.password = value.length < 8 ? '(password must be 8 characters long)' : '';
+            errors.password = value.length < 8 ? '(password phải dài hơn 8 kí tự)' : '';
         }
         if(name === 'fullName'){
-            errors.fullName = value.length < 1 ? '(fullName is required)' : '';
+            errors.fullName = value.length < 1 ? '(fullName bắt buộc)' : '';
         }
         this.setState({
             errors,
@@ -64,7 +64,7 @@ class Register extends React.Component {
         }
         let notification = '';
         if(isRegistering === false && isRegistered === true){
-            notification = <Form.Control className='text-danger' type="text" value='Register is successed' readOnly />
+            notification = <Form.Control className='text-danger' type="text" value='Đăng kí thành công' readOnly />
         }
         if(isRegistering === false && isRegistered === false){
             notification = <Form.Control className='text-danger' type="text" value={error} readOnly />
@@ -73,7 +73,7 @@ class Register extends React.Component {
         return(
             <div className="container form border border-danger mt-5">
                 <div className='row justify-content-md-center'>
-                    <h2 className="mt-4">Register</h2>
+                    <h2 className="mt-4">Đăng Kí</h2>
                 </div>
                 <div className='row'><br/><br/></div>
                 <div className='row justify-content-md-center'>
@@ -95,7 +95,7 @@ class Register extends React.Component {
                                 <Form.Text className="text-muted"></Form.Text>
                             </Form.Group>
                             <Button className="w-100" variant="primary" type="submit" disabled = {isRegistering}>
-                                Register
+                                Đăng Kí
                             </Button>
                             {loading}
                         </Form>

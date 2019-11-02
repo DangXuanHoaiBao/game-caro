@@ -32,10 +32,10 @@ class InforUser extends React.Component{
         const {errors} = this.state;
 
         if(name === 'newUsername'){
-            errors.newUsername = (value.length < 1 || value[0] === ' ') ? '(username is required)' : '';
+            errors.newUsername = (value.length < 1 || value[0] === ' ') ? '(username bắt buộc)' : '';
         }
         if(name === 'newFullName'){
-            errors.newFullName = (value.length < 1 || value[0] === ' ') ? '(fullName is required)' : '';
+            errors.newFullName = (value.length < 1 || value[0] === ' ') ? '(fullName bắt buộc)' : '';
         }
         this.setState({
             errors,

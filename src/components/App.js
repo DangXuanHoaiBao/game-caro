@@ -42,23 +42,23 @@ class App extends React.Component {
         return(
             <Router history={history}>
                 <Navbar bg="dark" expand="lg" variant="dark">
-                    <Navbar.Brand><Link to='/'> Home </Link></Navbar.Brand>
+                    <Navbar.Brand><Link to='/'> Trang Chủ </Link></Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mr-auto">
-                            <Nav.Link to='/play-game' onClick={this.handleClickLink}>Play Game</Nav.Link>
+                            <Nav.Link to='/play-game' onClick={this.handleClickLink}>Chơi Game</Nav.Link>
                         </Nav>
                         { !userInfor &&
                             <Nav>
-                                <Link to='/register'><Button variant="outline-info">Sign-up</Button></Link>
+                                <Link to='/register'><Button variant="outline-info">Đăng Kí</Button></Link>
                                 &nbsp;
-                                <Link to='/login'> <Button variant="outline-info">Login</Button></Link>
+                                <Link to='/login'> <Button variant="outline-info">Đăng Nhập</Button></Link>
                             </Nav>
                         }
 
                         { userInfor &&
                             <Nav>
-                                <Button className="w-50" onClick={this.handleClickButton} variant="outline-info">Logout</Button>
+                                <Button className="w-50" onClick={this.handleClickButton} variant="outline-info">Đăng Xuất</Button>
                                 &nbsp;
                                 <Link to='/infor-user'> <Button variant="outline-info">{userInfor.user}</Button></Link>
                             </Nav>

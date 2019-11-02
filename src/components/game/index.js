@@ -6,7 +6,7 @@ import '../../css/game.css'
 const Game = ({history, winnerHistory, stepNumber, xIsNext, handleClick, previousClick, nextClick, jumpTo}) => {
         
     const moves = history.map((step, move) => {
-        const desc = move ? `Go to move #${move}` : 'Go to game start'
+        const desc = move ? `Quay lại bước #${move}` : 'Bắt đầu lại'
         if (stepNumber === move) {
             return (
                 <li key={move.toString()}>
@@ -41,10 +41,10 @@ const Game = ({history, winnerHistory, stepNumber, xIsNext, handleClick, previou
     if (winnerCurrent) {
         arrayWinner = winnerCurrent.arrayWinner.slice()
         player = stepNumber % 2 ? 'x' : 'o'
-        status = `Winner: ${player}`
+        status = `Người Thắng: ${player}`
     } else {
         player = xIsNext ? 'x' : 'o'
-        status = `Player next: ${player}`
+        status = `Người đánh tiếp theo: ${player}`
     }
     return (
         <div className="container form border border-info mt-4">
@@ -65,10 +65,10 @@ const Game = ({history, winnerHistory, stepNumber, xIsNext, handleClick, previou
                             className="mt-3 mb-3 ml-4"
                             onClick={() => previousClick()}
                         >
-                            Previous
+                            Trước đó
                         </button>
                         <button type="button" onClick={() => nextClick()}>
-                            Next
+                            Kế tiếp
                         </button>
                     </span>
                     <ol>{moves}</ol>
