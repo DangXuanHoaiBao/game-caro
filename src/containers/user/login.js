@@ -10,7 +10,8 @@ const mapStateToProps = state => ({
 });
 
 const actionCreator = {
-    login: userActions.login
+    loginLocal: userActions.loginLocal,
+    loginFacebook: userActions.loginFacebook
 }
 
 export default connect(

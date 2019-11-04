@@ -1,5 +1,6 @@
 import React from 'react';
 import {Form, Button} from 'react-bootstrap';
+import FacebookLogin from 'react-facebook-login';
 import '../../css/loader.css';
 import '../../css/user-page.css';
 
@@ -16,6 +17,7 @@ class Login extends React.Component {
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.responseFacebook = this.responseFacebook.bind(this);
     }
 
     handleChange(e){
@@ -36,15 +38,21 @@ class Login extends React.Component {
     handleSubmit(e){
         e.preventDefault();
         const {username, password, errors} = this.state;
-        const {login} = this.props;
+        const {loginLocal} = this.props;
         const user = {
             username,
             password
         }
         if(errors.username === '' && errors.password === '' && username.length !== 0 && password.length !== 0){
             this.setState({username: '', password: '', errors: {}});
-            login(user);
+            loginLocal(user);
         }
+    }
+    
+    async responseFacebook(res) {
+        const {loginFacebook} = this.props;
+        console.log(res.accessToken);
+        loginFacebook(res.accessToken);
     }
 
     render(){
@@ -85,6 +93,12 @@ class Login extends React.Component {
                             </Button>
                             {loading}
                         </Form>
+                        <FacebookLogin
+                            appId="725705244576219"
+                            autoLoad
+                            fields="name,email,picture"
+                            callback={this.responseFacebook}
+                        />
                     </div>
                 </div>
             </div>
@@ -92,3 +106,5 @@ class Login extends React.Component {
     }
 }
 export default Login;
+
+// client secret: bjVGSxu2rlMVe2-7dBDRCOyN

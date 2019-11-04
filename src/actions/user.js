@@ -52,7 +52,7 @@ function register(user){
     }
 };
 
-function login(user){
+function loginLocal(user){
     const {username, password} = user;
     function loginRequest(){
         return {
@@ -74,7 +74,7 @@ function login(user){
     return dispatch => {
          dispatch(loginRequest());
         // eslint-disable-next-line no-undef
-        fetch('https://api-passport-jwt.herokuapp.com/user/login', {
+        fetch('https://api-passport-jwt.herokuapp.com/user/login-local', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -87,6 +87,52 @@ function login(user){
         })
         .then(res => {
             res.text().then(text => {
+                if(res.status >= 200 && res.status < 300){
+                    const userInfor = JSON.parse(text);
+                    localStorage.setItem('res', userInfor.token);
+                    dispatch(loginSuccess(userInfor));
+                    history.push('/play-game');
+                }
+                else{
+                    const error = (JSON.parse(text)).message;
+                    dispatch(loginFail(error));
+                }
+            })
+        })
+        .catch(error => console.log(error));
+    }   
+}
+
+function loginFacebook(data){
+    function loginRequest(){
+        return {
+            type: 'LOGIN_REQUEST'
+        }
+    }
+    function loginSuccess(userInfor){
+        return {
+            type: 'LOGIN_SUCCESS',
+            userInfor
+        }
+    }
+    function loginFail(error){
+        return {
+            type: 'LOGIN_FAIL',
+            error
+        }
+    }
+    // api-passport-jwt.herokuapp.com
+    return dispatch => {
+         dispatch(loginRequest());
+        // eslint-disable-next-line no-undef
+        fetch('http://api-passport-jwt.herokuapp.com/user/oauth/facebook', {
+            method: 'POST',
+            access_token: data,
+
+        })
+        .then(res => {
+            res.text().then(text => {
+                console.log(text);
                 if(res.status >= 200 && res.status < 300){
                     const userInfor = JSON.parse(text);
                     localStorage.setItem('res', userInfor.token);
@@ -215,7 +261,8 @@ function updateUserInfor(username, newUser){
 
 const userActions = {
     register,
-    login,
+    loginLocal,
+    loginFacebook,
     logout,
     getInforUser,
     updateUserInfor
