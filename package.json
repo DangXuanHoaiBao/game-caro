@@ -2,7 +2,7 @@
   "name": "gamecaro",
   "version": "0.1.0",
   "engines": {
-    "node": "12.13.0"
+    "node": "11.10.1"
   },
   "private": true,
   "dependencies": {
