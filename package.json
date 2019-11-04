@@ -1,6 +1,6 @@
 {
   "name": "gamecaro",
-  "version": "0.1.0",
+  "version": "v11.10.1",
   "private": true,
   "dependencies": {
     "bootstrap": "^4.3.1",
