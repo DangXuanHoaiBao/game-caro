@@ -5,7 +5,7 @@ import Login from '../../components/user/login';
 const mapStateToProps = state => ({
     isLogining: state.userLoginReducer.isLogining,
     isLogined: state.userLoginReducer.isLogined,
-    userInfor: state.userLoginReducer.userInfor,
+    username: state.userLoginReducer.username,
     error: state.userLoginReducer.error
 });
 

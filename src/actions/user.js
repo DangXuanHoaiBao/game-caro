@@ -8,10 +8,9 @@ function register(user){
         }
     }
     
-    function registerSuccess(data){
+    function registerSuccess(){
         return{
-            type: 'REGISTER_SUCCESS',
-            data
+            type: 'REGISTER_SUCCESS'
         }
     }
     
@@ -39,8 +38,8 @@ function register(user){
         .then(res => {
             res.text().then(text=> {
                 if(res.status >= 200 && res.status < 300){
-                    const data = JSON.parse(text)
-                    dispatch(registerSuccess(data));
+                    dispatch(registerSuccess());
+                    history.push('/login');
                 }
                 else{
                     const error = (JSON.parse(text)).message;
@@ -52,25 +51,25 @@ function register(user){
     }
 };
 
+function loginRequest(){
+    return {
+        type: 'LOGIN_REQUEST'
+    }
+}
+function loginSuccess(username){
+    return {
+        type: 'LOGIN_SUCCESS',
+        username
+    }
+}
+function loginFail(error){
+    return {
+        type: 'LOGIN_FAIL',
+        error
+    }
+}
+
 function loginLocal(user){
-    const {username, password} = user;
-    function loginRequest(){
-        return {
-            type: 'LOGIN_REQUEST'
-        }
-    }
-    function loginSuccess(userInfor){
-        return {
-            type: 'LOGIN_SUCCESS',
-            userInfor
-        }
-    }
-    function loginFail(error){
-        return {
-            type: 'LOGIN_FAIL',
-            error
-        }
-    }
     return dispatch => {
          dispatch(loginRequest());
         // eslint-disable-next-line no-undef
@@ -81,17 +80,20 @@ function loginLocal(user){
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                'username': username,
-                'password': password,
+                'username': user.username,
+                'password': user.password,
             })
         })
         .then(res => {
             res.text().then(text => {
                 if(res.status >= 200 && res.status < 300){
-                    const userInfor = JSON.parse(text);
-                    localStorage.setItem('res', userInfor.token);
-                    dispatch(loginSuccess(userInfor));
+
+                    const data = JSON.parse(text);
+                    const {username, token} = data;
+                    localStorage.setItem('res', token);
+                    dispatch(loginSuccess(username));
                     history.push('/play-game');
+
                 }
                 else{
                     const error = (JSON.parse(text)).message;
@@ -103,45 +105,36 @@ function loginLocal(user){
     }   
 }
 
-function loginFacebook(data){
-    function loginRequest(){
-        return {
-            type: 'LOGIN_REQUEST'
-        }
-    }
-    function loginSuccess(userInfor){
-        return {
-            type: 'LOGIN_SUCCESS',
-            userInfor
-        }
-    }
-    function loginFail(error){
-        return {
-            type: 'LOGIN_FAIL',
-            error
-        }
-    }
-    // api-passport-jwt.herokuapp.com
+function loginFacebook(accessToken){
     return dispatch => {
          dispatch(loginRequest());
         // eslint-disable-next-line no-undef
-        fetch('http://api-passport-jwt.herokuapp.com/user/oauth/facebook', {
+        fetch('https://api-passport-jwt.herokuapp.com/user/oauth/facebook', {
             method: 'POST',
-            access_token: data,
-
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'access_token': accessToken
+            })
         })
         .then(res => {
             res.text().then(text => {
-                console.log(text);
                 if(res.status >= 200 && res.status < 300){
-                    const userInfor = JSON.parse(text);
-                    localStorage.setItem('res', userInfor.token);
-                    dispatch(loginSuccess(userInfor));
+
+                    const data = JSON.parse(text);
+                    const {token} = data;
+                    const username = data.user.fullName;
+                    localStorage.setItem('res', token);
+                    dispatch(loginSuccess(username));
                     history.push('/play-game');
+
                 }
                 else{
-                    const error = (JSON.parse(text)).message;
+                    const error = text.message;
                     dispatch(loginFail(error));
+                    history.push('/login');
                 }
             })
         })

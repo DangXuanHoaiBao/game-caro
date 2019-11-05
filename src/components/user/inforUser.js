@@ -58,6 +58,7 @@ class InforUser extends React.Component{
 
     render(){
         const {newUsername, newFullName, isUserInforGetted, errors} = this.state;
+        const {isUpdating, isUpdated, errorUpdate} = this.props;
         if(isUserInforGetted){
             const {userInforGet} = this.props;
             if(userInforGet){
@@ -68,26 +69,16 @@ class InforUser extends React.Component{
                 })
             }
         }
-
-        const {isUpdating, isUpdated, errorUpdate} = this.props;
-        let loading = '';
-        if(isUpdating === true){
-            loading = <div className="loader" />
-        }
-        let notification = '';
-        if(isUpdating === false && isUpdated === false){
-            notification = <Form.Control className='text-danger' type="text" value={errorUpdate} readOnly />
-        }
-
+        
         return(
             <div className="container form border border-danger mt-5">
                 <div className='row justify-content-md-center'>
                     <h2 className="mt-4">Cập Nhật</h2>
                 </div>
-                {notification}
+                { (!isUpdating && !isUpdated) && <Form.Control className='text-danger' type="text" value={errorUpdate} readOnly /> }
                 <br/><br/>
                 <div className='row justify-content-md-center'>
-                    <div className='col-md-5 mb-5'>
+                    <div className='col-md-4 mb-5'>
                         <Form onSubmit={this.handleSubmit}>
                             <Form.Group controlId="formBasicFullName">
                                 <Form.Label>Full name <span className="text-danger"> {errors.newFullName} </span> </Form.Label>
@@ -102,7 +93,7 @@ class InforUser extends React.Component{
                             <Button className="w-100" variant="primary" type="submit" disabled={isUpdating}>
                                 Cập Nhật
                             </Button>
-                            {loading}
+                            { isUpdating && <div className="loader" /> }
                         </Form>
                     </div>
                 </div>

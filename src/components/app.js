@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 import Register from '../containers/user/register';
 import Login from '../containers/user/login';
 import Home from './home';
-import Game from '../containers/game';
+import HomeGame from '../components/game/homeGame';
 import history from '../helpers/history';
 import userActions from '../actions/user';
 import InforUser from './user/inforUser';
@@ -21,8 +21,8 @@ class App extends React.Component {
     // eslint-disable-next-line class-methods-use-this
     handleClickLink(e){
         e.preventDefault();
-        const {userInfor} = this.props;
-        if(userInfor){
+        const {username} = this.props;
+        if(username){
             history.push('/play-game');
         }
         else{
@@ -38,7 +38,7 @@ class App extends React.Component {
     }
 
     render(){
-        const {userInfor} = this.props;
+        const {username} = this.props;
         return(
             <Router history={history}>
                 <Navbar bg="dark" expand="lg" variant="dark">
@@ -48,7 +48,7 @@ class App extends React.Component {
                         <Nav className="mr-auto">
                             <Nav.Link to='/play-game' onClick={this.handleClickLink}>Chơi Game</Nav.Link>
                         </Nav>
-                        { !userInfor &&
+                        { !username &&
                             <Nav>
                                 <Link to='/register'><Button variant="outline-info">Đăng Kí</Button></Link>
                                 &nbsp;
@@ -56,11 +56,11 @@ class App extends React.Component {
                             </Nav>
                         }
 
-                        { userInfor &&
+                        { username &&
                             <Nav>
-                                <Button className="w-50" onClick={this.handleClickButton} variant="outline-info">Đăng Xuất</Button>
+                                <Button onClick={this.handleClickButton} variant="outline-info">Đăng Xuất</Button>
                                 &nbsp;
-                                <Link to='/infor-user'> <Button variant="outline-info">{userInfor.user}</Button></Link>
+                                <Link to='/infor-user'> <Button variant="outline-info">{username}</Button></Link>
                             </Nav>
                         }
 
@@ -70,7 +70,7 @@ class App extends React.Component {
                     <Switch>
                         <Route exact path='/register' component={Register} />
                         <Route exact path='/login' component={Login} />
-                        <Route exact path='/play-game' component={Game} />
+                        <Route exact path='/play-game' component={HomeGame} />
                         <Route exact path='/infor-user' component={InforUser}/>
                         <Route exact path='/' component={Home} />
                     </Switch>
@@ -81,7 +81,7 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    userInfor: state.userLoginReducer.userInfor
+    username: state.userLoginReducer.username
 })
 
 const actionCreator = {

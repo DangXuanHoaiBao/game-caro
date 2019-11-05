@@ -51,24 +51,15 @@ class Login extends React.Component {
     
     async responseFacebook(res) {
         const {loginFacebook} = this.props;
-        console.log(res.accessToken);
         loginFacebook(res.accessToken);
     }
 
     render(){
+
         const {username, password, errors} = this.state;
-        const {isLogining, isLogined, userInfor, error} = this.props;
-        let loading = '';
-        if(isLogining === true){
-            loading = <div className="loader" />
-        }
+        const {isLogining, isLogined, error} = this.props;
         let notification = '';
-        if(isLogining === false && isLogined === true){
-            notification = <Form.Control className='text-danger' type="text" value={userInfor.user} readOnly />
-        }
-        if(isLogining === false && isLogined === false){
-            notification = <Form.Control className='text-danger' type="text" value={error} readOnly />
-        }
+        if(isLogining === false && isLogined === false){ notification = <Form.Control className='text-danger' type="text" value={error} readOnly /> }
         return(
             <div className="container form border border-danger mt-5">
                 <div className='row justify-content-md-center'>
@@ -76,9 +67,9 @@ class Login extends React.Component {
                 </div>
                 <br/><br/>
                 <div className='row justify-content-md-center'>
-                    <div className='col-md-5 mb-5'>
-                        {notification}
-                        <Form onSubmit = {this.handleSubmit}>
+                    <div className='col-md-4 mb-5'>
+                        { notification }
+                        <Form onSubmit = {this.handleSubmit} className="mb-2">
                             <Form.Group controlId="formBasicEmail">
                                 <Form.Label>Username <span className="text-danger"> {errors.username} </span></Form.Label>
                                 <Form.Control type="text" placeholder="Enter username" name="username" value={username} onChange={this.handleChange}/>
@@ -91,11 +82,13 @@ class Login extends React.Component {
                             <Button className="w-100" variant="primary" type="submit">
                                 Đăng Nhập
                             </Button>
-                            {loading}
+                            { isLogining && <div className="loader" /> }
                         </Form>
                         <FacebookLogin
                             appId="725705244576219"
                             autoLoad
+                            icon="fa-facebook"
+                            cssClass="btn btn-outline-primary"
                             fields="name,email,picture"
                             callback={this.responseFacebook}
                         />

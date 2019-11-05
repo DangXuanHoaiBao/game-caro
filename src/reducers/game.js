@@ -309,7 +309,8 @@ const gameReducer = (state = defaultState, action) => {
                 return state
             }
 
-            squares[index] = state.xIsNext ? 'x' : 'o'
+            squares[index] = 'x';
+            // state.xIsNext ? 'x' : squares[index] = state.xIsNext ? 'x' : 'o'
 
             if (calculateWinner(squares, index)) {
                 return {
@@ -327,7 +328,43 @@ const gameReducer = (state = defaultState, action) => {
                 xIsNext: !state.xIsNext
             }
         }
+        case 'RANDOM_CLICK': {
+            const historyCopy = state.history.slice(0, state.stepNumber + 1)
+            const current = historyCopy[historyCopy.length - 1]
+            const squares = current.squares.slice()
+            const winnerHistoryCopy = state.winnerHistory.slice(0, state.stepNumber)
+            const currentWinner = winnerHistoryCopy[winnerHistoryCopy.length - 1]
 
+            if (squares[index] || currentWinner) {
+                return state
+            }
+
+            let checkEmpty = false;
+            while(checkEmpty === false){
+                const i = Math.floor((Math.random() * 100) + 1);
+                if(!squares[i]){
+                    squares[i] = 'o';
+                    checkEmpty = true;
+                }
+            }
+            // state.xIsNext ? 'x' : squares[index] = state.xIsNext ? 'x' : 'o'
+
+            if (calculateWinner(squares, index)) {
+                return {
+                    history: historyCopy.concat([{ squares }]),
+                    winnerHistory: winnerHistoryCopy.concat([
+                        { arrayWinner: calculateWinner(squares, index) }
+                    ]),
+                    stepNumber: historyCopy.length
+                }
+            }
+            return {
+                history: historyCopy.concat([{ squares }]),
+                winnerHistory: winnerHistoryCopy.concat([null]),
+                stepNumber: historyCopy.length,
+                xIsNext: !state.xIsNext
+            }
+        }
         case 'JUMPTO': {
             return {
                 ...state,

@@ -1,20 +1,38 @@
-
-
-export const handleClick = i => ({
-    type: 'HANDLE_CLICK',
-    i
+const handleClick = i => ({
+   type: 'HANDLE_CLICK',
+   i
 });
 
-export const jumpTo = step => ({
+const randomClick = () => ({
+   type: 'RANDOM_CLICK'
+});
+
+function clickAction(i){
+   return dispatch => {
+      dispatch(handleClick(i));
+      dispatch(randomClick());
+   }
+}
+
+const jumpTo = step => ({
    type: 'JUMPTO',
    step
 });
 
-export const previousClick = () => ({
+const previousClick = () => ({
    type: 'PREVIOUS_CLICK'
 });
 
-export const nextClick = () => ({
+const nextClick = () => ({
    type: 'NEXT_CLICK'
 });
 
+const gameActions = {
+   clickAction,
+   jumpTo,
+   previousClick,
+   nextClick
+
+}
+
+export default gameActions;

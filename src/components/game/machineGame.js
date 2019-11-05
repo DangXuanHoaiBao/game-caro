@@ -3,7 +3,7 @@ import Board from './board'
 import '../../css/bootstrap.css'
 import '../../css/game.css'
 
-const Game = ({history, winnerHistory, stepNumber, xIsNext, handleClick, previousClick, nextClick, jumpTo}) => {
+const MachineGame = ({history, winnerHistory, stepNumber, xIsNext, clickAction, previousClick, nextClick, jumpTo}) => {
         
     const moves = history.map((step, move) => {
         const desc = move ? `Quay lại bước #${move}` : 'Bắt đầu lại'
@@ -54,7 +54,7 @@ const Game = ({history, winnerHistory, stepNumber, xIsNext, handleClick, previou
                     <Board
                         squares={squares}
                         arrayWinner={arrayWinner}
-                        onClick={(i) => handleClick(i)}
+                        onClick={(i) => clickAction(i)}
                     />
                 </div>
                 <div className="col-md-4 mt-5">
@@ -78,4 +78,4 @@ const Game = ({history, winnerHistory, stepNumber, xIsNext, handleClick, previou
     )
 }
 
-export default Game
+export default MachineGame

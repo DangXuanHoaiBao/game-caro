@@ -38,7 +38,7 @@ export const userLoginReducer = (state = {}, action) => {
             return {
                 isLogining: false,
                 isLogined: true,
-                userInfor: action.userInfor
+                username: action.username
             }
         }
         case 'LOGIN_FAIL': {

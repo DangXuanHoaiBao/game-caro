@@ -56,20 +56,11 @@ class Register extends React.Component {
     }
 
     render(){
+
         const {username, password, fullName, errors} = this.state;
         const {isRegistering, isRegistered, error} = this.props;
-        let loading = '';
-        if(isRegistering === true){
-            loading = <div className="loader" />
-        }
         let notification = '';
-        if(isRegistering === false && isRegistered === true){
-            notification = <Form.Control className='text-danger' type="text" value='Đăng kí thành công' readOnly />
-        }
-        if(isRegistering === false && isRegistered === false){
-            notification = <Form.Control className='text-danger' type="text" value={error} readOnly />
-        }
-
+        if(isRegistering === false && isRegistered === false){ notification = <Form.Control className='text-danger' type="text" value={error} readOnly />}
         return(
             <div className="container form border border-danger mt-5">
                 <div className='row justify-content-md-center'>
@@ -77,8 +68,8 @@ class Register extends React.Component {
                 </div>
                 <div className='row'><br/><br/></div>
                 <div className='row justify-content-md-center'>
-                    <div className='col-md-5 mb-5'>
-                        {notification}
+                    <div className='col-md-4 mb-5'>
+                        { notification }
                         <Form onSubmit={this.handleSubmit}>
                             <Form.Group controlId="formBasicUsername">
                                 <Form.Label>Username <span className="text-danger"> {errors.username} </span> </Form.Label>
@@ -97,7 +88,7 @@ class Register extends React.Component {
                             <Button className="w-100" variant="primary" type="submit" disabled = {isRegistering}>
                                 Đăng Kí
                             </Button>
-                            {loading}
+                            { isRegistering && <div className="loader" /> }
                         </Form>
                     </div>
                 </div>
