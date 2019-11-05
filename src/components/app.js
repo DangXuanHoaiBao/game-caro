@@ -6,17 +6,27 @@ import {connect} from 'react-redux';
 import Register from '../containers/user/register';
 import Login from '../containers/user/login';
 import Home from './home';
-import HomeGame from '../components/game/homeGame';
+import HomeGame from './game/homeGame';
 import history from '../helpers/history';
 import userActions from '../actions/user';
 import InforUser from './user/inforUser';
 
+// const io = require('socket.io-client');
+
 class App extends React.Component {
     constructor(props){
         super(props);
+        // this.state = {
+        //     socket: null
+        // }
         this.handleClickLink = this.handleClickLink.bind(this);
         this.handleClickButton = this.handleClickButton.bind(this);
     }
+
+    // componentDidMount(){
+    //     const socket = io('http://localhost:3001/');
+    //     this.setState({ socket });
+    // }
 
     // eslint-disable-next-line class-methods-use-this
     handleClickLink(e){
@@ -39,6 +49,11 @@ class App extends React.Component {
 
     render(){
         const {username} = this.props;
+
+        // if(username){
+        //     socket.emit('add-player')
+        // }
+
         return(
             <Router history={history}>
                 <Navbar bg="dark" expand="lg" variant="dark">

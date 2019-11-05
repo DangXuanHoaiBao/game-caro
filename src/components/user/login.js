@@ -4,10 +4,13 @@ import FacebookLogin from 'react-facebook-login';
 import '../../css/loader.css';
 import '../../css/user-page.css';
 
+// const io = require('socket.io-client');
+
 class Login extends React.Component {
     constructor(props){
         super(props);
         this.state = {
+            // socket: null,
             username: '',
             password: '',
             errors: {
@@ -19,6 +22,11 @@ class Login extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.responseFacebook = this.responseFacebook.bind(this);
     }
+
+    // componentDidMount(){
+    //     const socket = io('http://localhost:3001/');
+    //     this.setState({ socket });
+    // }
 
     handleChange(e){
         const {name, value} = e.target;
@@ -46,9 +54,10 @@ class Login extends React.Component {
         if(errors.username === '' && errors.password === '' && username.length !== 0 && password.length !== 0){
             this.setState({username: '', password: '', errors: {}});
             loginLocal(user);
+            // socket.emit('add-player', user.username);
         }
     }
-    
+
     async responseFacebook(res) {
         const {loginFacebook} = this.props;
         loginFacebook(res.accessToken);
@@ -60,6 +69,7 @@ class Login extends React.Component {
         const {isLogining, isLogined, error} = this.props;
         let notification = '';
         if(isLogining === false && isLogined === false){ notification = <Form.Control className='text-danger' type="text" value={error} readOnly /> }
+        
         return(
             <div className="container form border border-danger mt-5">
                 <div className='row justify-content-md-center'>
@@ -85,8 +95,7 @@ class Login extends React.Component {
                             { isLogining && <div className="loader" /> }
                         </Form>
                         <FacebookLogin
-                            appId="725705244576219"
-                            autoLoad
+                            appId="number"
                             icon="fa-facebook"
                             cssClass="btn btn-outline-primary"
                             fields="name,email,picture"

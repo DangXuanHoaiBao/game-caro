@@ -9,24 +9,6 @@ const mapStateToProps = state => ({
     stepNumber: state.gameReducer.stepNumber
 })
 
-// const mapDispatchToProps = dispatch =>({
-//     handleClick: i => {
-//        dispatch(handleClick(i))
-//     },
-//     randomClick: () =>{
-//        dispatch(randomClick())
-//     },
-//     jumpTo: step => {
-//         dispatch(jumpTo(step))
-//     },
-//     previousClick: () =>{
-//         dispatch(previousClick())
-//     },
-//     nextClick: () =>{
-//         dispatch(nextClick())
-//     }
-// });
-
 const actionCreator = {
     clickAction: gameActions.clickAction,
     jumpTo: gameActions.jumpTo,
@@ -37,5 +19,5 @@ const actionCreator = {
 export default connect(
     mapStateToProps,
     actionCreator
-)(MachineGame)
+)(MachineGame);
 
