@@ -87,10 +87,9 @@ function loginLocal(user){
         .then(res => {
             res.text().then(text => {
                 if(res.status >= 200 && res.status < 300){
-
                     const data = JSON.parse(text);
                     const {username} = data;
-                    localStorage.setItem('res', text);
+                    localStorage.setItem('res', JSON.stringify(data));
                     dispatch(loginSuccess(username));
                     history.push('/play-game');
 
@@ -126,7 +125,7 @@ function loginFacebook(accessToken){
                     const data = JSON.parse(text);
                     // const {token} = data;
                     const username = data.user.fullName;
-                    localStorage.setItem('res', text);
+                    localStorage.setItem('res', JSON.stringify(text));
                     dispatch(loginSuccess(username));
                     history.push('/play-game');
 
