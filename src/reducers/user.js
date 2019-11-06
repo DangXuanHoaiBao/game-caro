@@ -26,7 +26,7 @@ export const userRegisterReducer = (state = {}, action) => {
     }
 }
 
-const res = JSON.parse(localStorage.getItem('res'));
+const res = localStorage.getItem('res');
 const initialState = res? { isLogining: false, isLogined: true, username: res.username } : {};
 export const userLoginReducer = (state = initialState, action) => {
     switch(action.type){

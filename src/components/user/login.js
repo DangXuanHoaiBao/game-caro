@@ -95,7 +95,7 @@ class Login extends React.Component {
                             { isLogining && <div className="loader" /> }
                         </Form>
                         <FacebookLogin
-                            appId="number"
+                            appId="725705244576219"
                             icon="fa-facebook"
                             cssClass="btn btn-outline-primary"
                             fields="name,email,picture"
