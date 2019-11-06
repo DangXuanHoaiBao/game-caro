@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React from 'react';
 import {Table, Badge} from 'react-bootstrap';
 import history from '../../helpers/history';
@@ -31,7 +32,8 @@ class Room extends React.Component{
         });
 
         socket.on('server-send-request', data=>{
-            alert(data + " mời bạn cùng chơi!")
+            // eslint-disable-next-line no-alert
+            alert(`${data  } mời bạn cùng chơi!`)
         });
     }
 
