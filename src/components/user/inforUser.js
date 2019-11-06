@@ -19,7 +19,7 @@ class InforUser extends React.Component{
         this.handleSubmit = this.handleSubmit.bind(this);
     } 
 
-    componentDidMount() {
+    componentWillMount() {
         const {getInforUser} = this.props;
         getInforUser();
         this.setState({
@@ -52,7 +52,7 @@ class InforUser extends React.Component{
            newUsername.length !== 0 && newFullName.length !== 0){
             const newUser = { newUsername, newFullName }
             updateUserInfor(userInforGet.username, newUser);
-            this.componentDidMount();
+            this.componentWillMount();
         }
     }
 

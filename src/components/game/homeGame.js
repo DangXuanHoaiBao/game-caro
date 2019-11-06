@@ -12,10 +12,10 @@ const HomeGame = () => {
             <div className="row justify-content-md-center mt-2">
                 <Router>
                     <Link to='/machine-game'><Button className="mr-2">Chơi với máy</Button></Link>
-                    <Link to='/online-game'><Button>Chơi online</Button></Link>
+                    <Link to='/room-player'><Button>Chơi online</Button></Link>
                     <Switch>
                         <Route exact path='/machine-game'><MachineGame/></Route>
-                        <Route exact path='/online-game'><Room/></Route>
+                        <Route exact path='/room-player'><Room/></Route>
                     </Switch>
                 </Router>
             </div>

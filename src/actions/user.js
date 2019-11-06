@@ -150,9 +150,9 @@ function logout(){
 }
 
 function authenticationHeader(){
-    const token = localStorage.getItem('res');
-    if (token) {
-        return { 'Authorization': `Bearer  ${token}` };
+    const data = JSON.parse(localStorage.getItem('res'));
+    if (data.token) {
+        return { 'Authorization': `Bearer  ${data.token}` };
     }
     return null;
 }
@@ -186,6 +186,7 @@ function getInforUser(){
             res.text().then(text => {
                 if(res.status >= 200 && res.status < 300){
                     const userInfor = JSON.parse(text);
+                    console.log(userInfor);
                     dispatch(getInforUserSuccess(userInfor));
                 }
                 else{
